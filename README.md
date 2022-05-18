@@ -8,7 +8,7 @@ If you want to see a proof of concept in action you can vistit this [Demo](http:
 
 If you want to use our [Low Latency API]([docs.nixtla.io/](https://docs.nixtla.io/reference/neural_transfer_neural_transfer_post)) for forecasting you can SingUp [here](nixtla.io/transfer-learning). 
 
-**You can contribute with your pre-trained models by following [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/edit/main/README.md) and sending us an email at federico[at]nixtla.io**
+**You can contribute with your pre-trained models by following [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb) and sending us an email at federico[at]nixtla.io**
 
 You can also take a look at list of pretrained models here.  Currently we have this ones avaiable in our [API](https://docs.nixtla.io/reference/neural_transfer_neural_transfer_post) or [Demo](http://nixtla.io/transfer_learning/). You can alos download the `.ckpt`:
 - [Pretrained N-HiTS M4 Hourly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nhits_m4_hourly.ckpt)
@@ -21,7 +21,7 @@ You can also take a look at list of pretrained models here.  Currently we have t
 - [Pretrained N-BEATS M4 Monthly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nbeats_m4_monthly.ckpt)
 - [Pretrained N-BEATS M4 Yearly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nbeats_m4_yearly.ckpt)
 
-See how to load and use the pretrained models in [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/edit/main/README.md).
+See how to load and use the pretrained models in [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb).
 If you want us to include more model or train some private ones in your own data, contact us at: federico@nixtla.io
 
 If you are interested in the transfer learning literature, take a look at this paper:
