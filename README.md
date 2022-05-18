@@ -6,7 +6,7 @@ For time series forecasting, the technique allows you to get lightning-fast pred
 [This notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb) shows how to generate a pre-trained model and store it in a checkpoint to make it available for public use to forecast new time series never seen by the model. 
 If you want to see a proof of concept in action you can visit this [Demo](http://nixtla.io/transfer-learning/).
 
-If you want to use our [Low Latency API]([docs.nixtla.io/](https://docs.nixtla.io/reference/forecast_post)) for forecasting you can SingUp [here](nixtla.io/transfer-learning). 
+If you want to use our [Low Latency API](https://docs.nixtla.io/reference/forecast_forecast_post) for forecasting you can SingUp [here](http://nixtla.io/transfer-learning). 
 
 **You can contribute with your pre-trained models by following [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb) and sending us an email at federico[at]nixtla.io**
 
