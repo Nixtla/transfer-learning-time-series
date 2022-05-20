@@ -3,7 +3,7 @@ Transfer learning refers to the process of pre-training a flexible model on a la
 
 For time series forecasting, the technique allows you to get lightning-fast predictions ⚡ bypassing the tradeoff between accuracy and speed.
 
-[This notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb) shows how to generate a pre-trained model and store it in a checkpoint to make it available for public use to forecast new time series never seen by the model. 
+[This notebook](https://colab.research.google.com/drive/1uFCO2UBpH-5l2fk3KmxfU0oupsOC6v2n?authuser=0&pli=1#cell-5=) shows how to generate a pre-trained model and store it in a checkpoint to make it available for public use to forecast new time series never seen by the model. 
 If you want to see a proof of concept in action you can visit this [Demo](http://nixtla.io/transfer-learning/).
 
 If you want to use our [Low Latency API](https://docs.nixtla.io/reference/forecast_forecast_post) for forecasting you can SingUp [here](http://18.235.133.135:3000/login). 
