@@ -21,7 +21,7 @@ You can also take a look at list of pretrained models here.  Currently we have t
 - [Pretrained N-BEATS M4 Monthly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nbeats_m4_monthly.ckpt)
 - [Pretrained N-BEATS M4 Yearly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nbeats_m4_yearly.ckpt)
 
-See how to load and use the pretrained models in [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning_for_Time_Series.ipynb).
+See how to load and use the pretrained models in [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning.ipynb).
 If you want us to include more model or train some private ones in your own data, contact us at: federico@nixtla.io.
 
 If you are interested in the transfer learning literature, take a look at this paper:
