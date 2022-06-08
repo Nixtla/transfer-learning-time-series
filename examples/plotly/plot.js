@@ -16,6 +16,32 @@ var trace1 = {
 
 var layout = {
   title: 'Ercot COAST',
+  xaxis: {
+	title: 'Timestamp',
+    titlefont: {
+      family: 'Arial, sans-serif',
+      size: 12,
+      color: 'black'
+    },
+    tickfont: {
+      family: 'Old Standard TT, serif',
+      size: 8,
+      color: 'black'
+    },
+  },
+  yaxis: {
+    title: 'Value',
+    titlefont: {
+      family: 'Arial, sans-serif',
+      size: 12,
+      color: 'black'
+    },
+    tickfont: {
+      family: 'Old Standard TT, serif',
+      size: 12,
+      color: 'black'
+    },
+  }
 };
 
 Plotly.newPlot('myDiv', [trace1], layout);
