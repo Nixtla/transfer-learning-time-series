@@ -9,3 +9,7 @@
 ```bash
 python -m http.server 8000
 ```
+
+You'll find a plot like the following,
+
+![](./plot.png)
