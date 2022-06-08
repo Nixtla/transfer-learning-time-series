@@ -75,8 +75,17 @@ fetch('http://nixtla.io/forecast', options)
 	  y: response.value,
 	  line: {color: 'red'}
 	};
-    console.log(forecastplot);
-    Plotly.newPlot('myDiv', [trace1, forecastplot], layout);
+	var predintervals = {
+	  type: "scatter",
+	  name: "Prediction Intervals",
+      fill: "toself",
+      fillcolor: "rgba(231,107,243,0.2)",
+	  x: response.timestamp.concat(response.timestamp.slice().reverse()),
+	  y: response.hi.concat(response.lo.slice().reverse()),
+	  line: {color: 'transparent'},
+	};
+    console.log(predintervals);
+    Plotly.newPlot('myDiv', [trace1, forecastplot, predintervals], layout);
   })
   .catch(err => console.error(err));
 });
