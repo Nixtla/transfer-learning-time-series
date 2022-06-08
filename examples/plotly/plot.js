@@ -1,4 +1,4 @@
-d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", function(err, rows){
+d3.csv("https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/ercot_COAST.csv", function(err, rows){
 
   function unpack(rows, key) {
   return rows.map(function(row) { return row[key]; });
@@ -8,14 +8,14 @@ d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-
 var trace1 = {
   type: "scatter",
   mode: "lines",
-  name: 'AAPL High',
-  x: unpack(rows, 'Date'),
-  y: unpack(rows, 'AAPL.High'),
+  name: 'Ercot COAST',
+  x: unpack(rows, 'Hour Ending'),
+  y: unpack(rows, 'COAST'),
   line: {color: '#17BECF'}
 }
 
 var layout = {
-  title: 'Basic Time Series',
+  title: 'Ercot COAST',
 };
 
 Plotly.newPlot('myDiv', [trace1], layout);
@@ -30,9 +30,10 @@ const options = {
   body: JSON.stringify({
     timestamp: trace1.x,
     value: trace1.y,
-    fh: 14,
+    fh: 24,
     seasonality: 7,
-    cv: false
+    cv: false,
+	model: 'nhits_m4_hourly'
   })
 };
 
@@ -52,5 +53,5 @@ fetch('http://nixtla.io/forecast', options)
     Plotly.newPlot('myDiv', [trace1, forecastplot], layout);
   })
   .catch(err => console.error(err));
-})
+});
 
