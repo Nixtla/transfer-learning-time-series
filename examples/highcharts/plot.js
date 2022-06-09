@@ -1,9 +1,9 @@
-Highcharts.chart({
+let options={
   chart: {
         renderTo: 'container'
   },
   title: {
-    text: 'Solar Employment Growth by Sector, 2010-2016'
+    text: 'Solar Employment Growth by Sector, 2010-2017 (forecast 2018-2021)'
   },
   subtitle: {
     text: 'Source: thesolarfoundation.com'
@@ -15,7 +15,7 @@ Highcharts.chart({
   },
   xAxis: {
     accessibility: {
-      rangeDescription: 'Range: 2010 to 2017'
+      rangeDescription: 'Range: 2010 to 2021'
     }
   },
   legend: {
@@ -31,22 +31,7 @@ Highcharts.chart({
       pointStart: 2010
     }
   },
-  series: [{
-    name: 'Installation',
-    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-  }, {
-    name: 'Manufacturing',
-    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-  }, {
-    name: 'Sales & Distribution',
-    data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-  }, {
-    name: 'Project Development',
-    data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-  }, {
-    name: 'Other',
-    data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-  }],
+  series: [{}],
   responsive: {
     rules: [{
       condition: {
@@ -61,5 +46,37 @@ Highcharts.chart({
       }
     }]
   }
-});
+}
+
+const api_options = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkRzcDUxYkp4UllkSXgxdkh3V3VRMyJ9.eyJpc3MiOiJodHRwczovL2Rldi00aGo1emVnay51cy5hdXRoMC5jb20vIiwic3ViIjoiNEoxUmhhNW1ZclV3OHpqQWFXVks2QTJKc2RXVFZNd0NAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vY3J5c3RhbC1iYWxsLWF1dGgwLmNvbSIsImlhdCI6MTY1MzUyMjYyNywiZXhwIjoxNjU2MTE0NjI3LCJhenAiOiI0SjFSaGE1bVlyVXc4empBYVdWSzZBMkpzZFdUVk13QyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.WS8gWjaTPSCKSRHbVwSjWf-ArbfiS7epxPw0boY_tS9aUfKQexbm47Ys-rR2g7hmhjgLd2M0RREx0onQVN7fyBPnoND49ki48xWq99JSoy-NOxu6ZGZyccvEwtgurCpDZsbwjXo8gyrRqzH9iELoDbFlwqbX7IAPaq4DvottoHP0E_K6VjCovftP5c84GWDpvdSY_Dtlal1PvsHyQGVBZSVvpMHZ1rEiMdeF6kRaFOt6ASZUMjmwXo5LvJcpHrOKqVryG0ApNPNUXkfoAJ7G8jl18yWl7ekbgPLuf8CBCfFxA6ZevTqCgUWQfGPGR_BGqNHOOi4N-AzDJID1Jbrjyg'
+  },
+  body: JSON.stringify({
+    timestamp: ['2010-01-01', '2011-01-01', '2012-01-01', '2013-01-01', '2014-01-01', '2015-01-01', '2016-01-01', '2017-01-01'],
+    value: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
+    fh: 3,
+    seasonality: 1,
+    cv: false
+  })
+};
+
+
+fetch('http://nixtla.io/forecast', api_options)
+  .then(response => response.json())
+  .then(response => {
+    options.series[0] = {
+      name: 'Installation',
+      data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+    };
+    options.series[1] = {
+      name: 'Installation Forecast',
+      data: Array(8).fill(null).concat(response.value)
+    };
+    var chart = new Highcharts.Chart(options);
+  })
+  .catch(err => console.error(err));
 
