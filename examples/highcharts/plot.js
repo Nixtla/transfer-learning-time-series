@@ -6,7 +6,7 @@ let options={
     text: 'Solar Employment Growth by Sector, 2010-2017 (forecast 2018-2021)'
   },
   subtitle: {
-    text: 'Source: thesolarfoundation.com'
+    text: 'Forecast using AutoARIMA model'
   },
   yAxis: {
     title: {
@@ -60,7 +60,8 @@ const api_options = {
     value: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
     fh: 3,
     seasonality: 1,
-    cv: false
+    cv: false,
+    model: 'arima'
   })
 };
 
@@ -70,11 +71,35 @@ fetch('http://nixtla.io/forecast', api_options)
   .then(response => {
     options.series[0] = {
       name: 'Installation',
-      data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+      data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
+      color: 'black',
+      label: {
+        enabled: false
+      },
     };
+    var predintervals = [];
+    for (i=0; i<8; i++){
+      predintervals[i] = [null, null];
+    };
+    for (i=8; i<11; i++){
+      predintervals[i] = [response.lo[i-8], response.hi[i-8]];
+	};
     options.series[1] = {
+      name: 'Prediction Intervals',
+      data: predintervals,
+      type: 'arearange',
+      color: 'rgba(231,107,243,0.2)',
+      label: {
+        enabled: false
+      },
+    };
+    options.series[2] = {
       name: 'Installation Forecast',
-      data: Array(8).fill(null).concat(response.value)
+      data: Array(8).fill(null).concat(response.value),
+      color: 'red',
+      label: {
+        enabled: false
+      },
     };
     var chart = new Highcharts.Chart(options);
   })
