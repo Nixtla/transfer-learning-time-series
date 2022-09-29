@@ -169,6 +169,7 @@ with row1_2:
 		seasonality=12,
 		model='arima'
 	)
+	print(json.dumps(payload))
 	headers = {
 		"Accept": "application/json",
 		"Content-Type": "application/json",
