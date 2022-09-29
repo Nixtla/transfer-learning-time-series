@@ -106,10 +106,12 @@ response = requests.post('http://app.nixtla.io/forecast', json=payload, headers=
 df_forecast = pd.DataFrame(json.loads(response.text))
 
 # anomalies code
+level = st.select_slider('Anomalies sensibility', options=[80, 85, 90, 95, 99], value=99)
+
 payload = dict(
 	timestamp=df['timestamp'].to_list(),
 	value=df['value'].to_list(),
-	level=99
+	level=level
 )
 headers = {
 	"Accept": "application/json",
