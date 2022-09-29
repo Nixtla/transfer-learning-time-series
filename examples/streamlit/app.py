@@ -76,14 +76,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.title("🔮 Historical behaviour of a time series")
+st.title("🔮 Historical and Future behaviour of a time series")
 
 intro="""
-Transfer learning refers to the process of pre-training a flexible model on a large dataset and using it later on other data with little to no training. 
-For time series forecasting, the technique allows you to get lightning-fast predictions ⚡ bypassing the tradeoff between accuracy and speed.
-In this Demo you can test our transferlearning models on different datasets and compare them to classical benchmark models.
-You can also [request tokens](http://18.235.133.135:3000/login) to our beta version of the [low latency API](https://docs.nixtla.io).
-You can contribute with your pre-trained models by following [this tutorial](https://colab.research.google.com/drive/1uFCO2UBpH-5l2fk3KmxfU0oupsOC6v2n?authuser=0&pli=1#cell-5=) and sending us an email at federico@nixtla.io.
+This example shows how to produce forecasts using Nixtla's API.
 """
 st.write(intro)
 
