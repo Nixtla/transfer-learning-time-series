@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def plot(df, df_forecast=None, df_anomaly=None):
+def plot(df, df_forecast=None, df_anomaly=None, df_intervals=None):
 	figs = [
         go.Scatter(x=df['timestamp'], y=df['value'], 
                    mode='lines',
@@ -43,8 +43,21 @@ def plot(df, df_forecast=None, df_anomaly=None):
 					   marker=dict(color='#E7C4C0'),
 					   name='Forecast'),
 		]
-	if df_anomaly is not None:
+	if df_anomaly is not None and df_intervals is not None:
+		ds = df_intervals['timestamp_insample'].to_list()
+		lo = df_intervals['lo'].to_list()
+		hi = df_intervals['hi'].to_list()
 		figs += [
+			go.Scatter(x=ds + ds[::-1],
+					   y=hi+lo[::-1],
+					   fill='toself',
+					   fillcolor='green',
+					   mode='lines',
+					   line=dict(color='green'),
+					   name='Insample Prediction Intervals',
+					   legendrank=5,
+					   opacity=0.5,
+					   hoverinfo='skip'),
 			go.Scatter(x=df_anomaly['timestamp'],
             		   y=df_anomaly['value'],
                        mode='markers',
@@ -108,7 +121,7 @@ level = st.select_slider('Anomalies sensibility', options=[80, 85, 90, 95, 99], 
 payload = dict(
 	timestamp=df['timestamp'].to_list(),
 	value=df['value'].to_list(),
-	level=level
+	sensibility=level
 )
 headers = {
 	"Accept": "application/json",
@@ -116,8 +129,10 @@ headers = {
 	"Authorization": f"Bearer {os.environ['BEARER_STREAMLIT']}"
 	
 }
-response = requests.post('http://app.nixtla.io/anomaly_detector', json=payload, headers=headers)
-df_anomaly = pd.DataFrame(json.loads(response.text))
+response = requests.post('http://app.nixtla.io/automl_anomaly', json=payload, headers=headers)
+response = json.loads(response.text)
+df_anomaly = pd.DataFrame({key: response[key] for key in ['timestamp', 'value']})
+df_intervals = pd.DataFrame({key: response[key] for key in ['timestamp_insample', 'lo', 'hi']})
 
 # plot without forecast
 #st.plotly_chart(plot(df.tail(200)), use_container_width=True)
@@ -126,5 +141,5 @@ df_anomaly = pd.DataFrame(json.loads(response.text))
 #st.plotly_chart(plot(df.tail(200), df_forecast), use_container_width=True)
 
 # plot with forecast and anomalies
-st.plotly_chart(plot(df.tail(200), df_forecast, df_anomaly), use_container_width=True)
+st.plotly_chart(plot(df.tail(200), df_forecast, df_anomaly, df_intervals), use_container_width=True)
 
