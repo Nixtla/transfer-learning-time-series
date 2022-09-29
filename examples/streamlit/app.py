@@ -92,6 +92,7 @@ payload = dict(
 	value=df['value'].to_list(),
 	fh=12,
 	seasonality=12,
+    model='arima'
 )
 headers = {
 	"Accept": "application/json",
