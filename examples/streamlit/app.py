@@ -14,7 +14,24 @@ load_dotenv()
 
 
 def plot(df, df_forecast=None, df_anomaly=None, df_intervals=None):
-	figs = [
+	figs = []
+	if df_intervals is not None:
+		ds = df_intervals['timestamp_insample'].to_list()
+		lo = df_intervals['lo'].to_list()
+		hi = df_intervals['hi'].to_list()
+		figs += [
+			go.Scatter(x=ds + ds[::-1],
+					   y=hi+lo[::-1],
+					   fill='toself',
+					   fillcolor='green',
+					   mode='lines',
+					   line=dict(color='green'),
+					   name='Insample Prediction Intervals',
+					   legendrank=5,
+					   opacity=0.5,
+					   hoverinfo='skip'),
+		]
+	figs += [
         go.Scatter(x=df['timestamp'], y=df['value'], 
                    mode='lines',
                    marker=dict(color='#236796'),
@@ -43,21 +60,8 @@ def plot(df, df_forecast=None, df_anomaly=None, df_intervals=None):
 					   marker=dict(color='#E7C4C0'),
 					   name='Forecast'),
 		]
-	if df_anomaly is not None and df_intervals is not None:
-		ds = df_intervals['timestamp_insample'].to_list()
-		lo = df_intervals['lo'].to_list()
-		hi = df_intervals['hi'].to_list()
+	if df_anomaly is not None:
 		figs += [
-			go.Scatter(x=ds + ds[::-1],
-					   y=hi+lo[::-1],
-					   fill='toself',
-					   fillcolor='green',
-					   mode='lines',
-					   line=dict(color='green'),
-					   name='Insample Prediction Intervals',
-					   legendrank=5,
-					   opacity=0.5,
-					   hoverinfo='skip'),
 			go.Scatter(x=df_anomaly['timestamp'],
             		   y=df_anomaly['value'],
                        mode='markers',
