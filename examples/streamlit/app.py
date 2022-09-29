@@ -12,6 +12,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DATASETS = {
+	'Peyton Manning': 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/peyton_manning.csv', 
+    'Ercot COAST': 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/ercot_COAST.csv',
+    'AirPassengers': 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/air_passengers.csv',
+    'Exchange USD-EUR': 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/usdeur.csv',
+}
 
 def plot(df, df_forecast=None, df_anomaly=None, df_intervals=None):
 	figs = []
@@ -100,50 +106,101 @@ This example shows how to produce forecasts using Nixtla's API.
 """
 st.write(intro)
 
-file = 'https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/peyton_manning.csv'
-df = pd.read_csv(file).tail(300)
-
-# forecast code
-payload = dict(
-	timestamp=df['timestamp'].to_list(),
-	value=df['value'].to_list(),
-	fh=12,
-	seasonality=12,
-    model='arima'
+st.header("Test on your own Data")
+### Config 
+url = 'http://nixtla.io'
+st.write(
+		"You can point to a URL containing a JSON file like [this one](https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json)"
+		" or a CSV like [this one](https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/air_passengers.csv)"
 )
-headers = {
-	"Accept": "application/json",
-	"Content-Type": "application/json",
-	"Authorization": f"Bearer {os.environ['BEARER_STREAMLIT']}"
-}
-response = requests.post('http://app.nixtla.io/forecast', json=payload, headers=headers)
-df_forecast = pd.DataFrame(json.loads(response.text))
+row1_1, row1_2 = st.columns((2, 2))
 
-# anomalies code
-level = st.select_slider('Anomalies sensibility', options=[80, 85, 90, 95, 99], value=99)
+with row1_1:
+	data_selection = st.selectbox('Select example dataset', DATASETS.keys())
+	data_url = DATASETS[data_selection]
+	url_json = st.text_input(
+			'Data (you can pass your own url here)',
+			data_url
+			)
+	st.write("You can also upload a CSV file like [this one](https://github.com/Nixtla/transfer-learning-time-series/blob/main/datasets/air_passengers.csv).")
 
-payload = dict(
-	timestamp=df['timestamp'].to_list(),
-	value=df['value'].to_list(),
-	sensibility=level
-)
-headers = {
-	"Accept": "application/json",
-	"Content-Type": "application/json",
-	"Authorization": f"Bearer {os.environ['BEARER_STREAMLIT']}"
-	
-}
-response = requests.post('http://app.nixtla.io/automl_anomaly', json=payload, headers=headers)
-response = json.loads(response.text)
-df_anomaly = pd.DataFrame({key: response[key] for key in ['timestamp', 'value']})
-df_intervals = pd.DataFrame({key: response[key] for key in ['timestamp_insample', 'lo', 'hi']})
+	uploaded_file = st.file_uploader('Upload CSV')
+	with st.form('Data'):
+		
+		if uploaded_file is not None:
+			df = pd.read_csv(uploaded_file)
+			cols = df.columns
+			timestamp_col = st.selectbox('Timestamp column', options=cols)
+			value_col = st.selectbox('Value column', options=cols)
+		else:
+			timestamp_col = st.text_input('Timestamp column', value='timestamp')
+			value_col = st.text_input('Value column', value='value')
+		st.write('You must press Submit each time you want to forecast.')
+		submitted = st.form_submit_button('Submit')
+		if submitted:
+			if uploaded_file is None:
+				st.write('Please provide a dataframe.')
+				if url_json.endswith('json'):
+					df = pd.read_json(url_json)
+				else:
+					df = pd.read_csv(url_json)
+				df.columns = ['timestamp', 'value']
+			else:
+			#df = pd.read_csv(uploaded_file)
+				df = df.rename(columns={timestamp_col: 'timestamp', value_col: 'value'})
+		else:
+			if url_json.endswith('json'):
+				df = pd.read_json(url_json)
+			else:
+				df = pd.read_csv(url_json)
+			df.columns = ['timestamp', 'value']
 
-# plot without forecast
-#st.plotly_chart(plot(df.tail(200)), use_container_width=True)
+		df['timestamp'] = pd.to_datetime(df['timestamp'])
+		df = df.sort_values('timestamp')
+		df['timestamp'] = df['timestamp'].astype(str)
+	df = df.tail(300)
 
-# plot with forecast
-#st.plotly_chart(plot(df.tail(200), df_forecast), use_container_width=True)
+with row1_2:
+	# forecast code
+	payload = dict(
+		timestamp=df['timestamp'].to_list(),
+		value=df['value'].to_list(),
+		fh=12,
+		seasonality=12,
+		model='arima'
+	)
+	headers = {
+		"Accept": "application/json",
+		"Content-Type": "application/json",
+		"Authorization": f"Bearer {os.environ['BEARER_STREAMLIT']}"
+	}
+	response = requests.post('http://app.nixtla.io/forecast', json=payload, headers=headers)
+	df_forecast = pd.DataFrame(json.loads(response.text))
 
-# plot with forecast and anomalies
-st.plotly_chart(plot(df.tail(200), df_forecast, df_anomaly, df_intervals), use_container_width=True)
+	# anomalies code
+	level = st.select_slider('Anomalies sensibility', options=[80, 85, 90, 95, 99], value=99)
+
+	payload = dict(
+		timestamp=df['timestamp'].to_list(),
+		value=df['value'].to_list(),
+		sensibility=level
+	)
+	headers = {
+		"Accept": "application/json",
+		"Content-Type": "application/json",
+		"Authorization": f"Bearer {os.environ['BEARER_STREAMLIT']}"
+		
+	}
+	response = requests.post('http://app.nixtla.io/automl_anomaly', json=payload, headers=headers)
+	response = json.loads(response.text)
+	df_anomaly = pd.DataFrame({key: response[key] for key in ['timestamp', 'value']})
+	df_intervals = pd.DataFrame({key: response[key] for key in ['timestamp_insample', 'lo', 'hi']})
+	# plot without forecast
+	#st.plotly_chart(plot(df.tail(200)), use_container_width=True)
+
+	# plot with forecast
+	#st.plotly_chart(plot(df.tail(200), df_forecast), use_container_width=True)
+
+	# plot with forecast and anomalies
+	st.plotly_chart(plot(df.tail(200), df_forecast, df_anomaly, df_intervals), use_container_width=False)
 
