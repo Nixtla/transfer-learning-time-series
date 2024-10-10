@@ -8,7 +8,7 @@ If you want to see a proof of concept in action you can visit this [Demo](http:/
 
 If you want to use our [Low Latency API](https://docs.nixtla.io/reference/forecast_forecast_post) for forecasting you can SingUp [here](http://18.235.133.135:3000/login). 
 
-**You can contribute with your pre-trained models by following [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning.ipynb) and sending us an email at federico[at]nixtla.io**
+**You can contribute with your pre-trained models by following [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning.ipynb) and sending us an email at azul[at]nixtla.io**
 
 You can also take a look at list of pretrained models here.  Currently we have this ones avaiable in our [API](https://docs.nixtla.io/reference/neural_transfer_neural_transfer_post) or [Demo](http://nixtla.io/transfer-learning/). You can also download the `.ckpt`:
 - [Pretrained N-HiTS M4 Hourly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nhits_m4_hourly.ckpt)
