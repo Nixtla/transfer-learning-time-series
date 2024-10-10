@@ -23,7 +23,7 @@ You can also take a look at list of pretrained models here.  Currently we have t
 - [Pretrained N-BEATS M4 Yearly](https://nixtla-public.s3.amazonaws.com/transfer/pretrained_models/nbeats_m4_yearly.ckpt)
 
 See how to load and use the pretrained models in [this Notebook](https://github.com/Nixtla/transfer-learning-time-series/blob/main/nbs/Transfer_Learning.ipynb).
-If you want us to include more model or train some private ones in your own data, contact us at: federico@nixtla.io.
+If you want us to include more model or train some private ones in your own data, contact us at: azul@nixtla.io.
 
 If you are interested in the transfer learning literature, take a look at this paper:
 - [Meta-learning framework with applications to zero-shot time-series forecasting](https://arxiv.org/abs/2002.02887)
