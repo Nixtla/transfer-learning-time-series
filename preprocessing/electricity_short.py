@@ -38,9 +38,16 @@ df = df.sort_values(by=["unique_id", "ds"], ignore_index=True)
 df_day = pd.get_dummies(df["ds"].dt.day_of_week, prefix="day", dtype=float)
 df = pd.concat([df, df_day], axis=1)
 
-# Splitting the dataset into past and future for exogenous
-future_ex_vars_df = df.drop(columns="y").groupby("unique_id").tail(24)
-df = df.drop(future_ex_vars_df.index)
+# Full version
+df[["unique_id", "ds", "y"]].to_csv("datasets/electricity.csv", index=False)
+df.drop(columns="y").to_csv("datasets/exogenous-vars-electricity.csv", index=False)
 
-df.to_csv("nbs/assets/electricity-short-with-ex-vars.csv", index=False)
-future_ex_vars_df.to_csv("nbs/assets/electricity-short-future-ex-vars.csv", index=False)
+# Splitting the dataset into past and future for exogenous for the short version
+n_days_short = 71
+df_short = df.groupby("unique_id", as_index=False).tail(n_days_short * 24)
+future_ex_vars_df = df_short.drop(columns="y").groupby("unique_id").tail(24)
+df_short = df_short.drop(future_ex_vars_df.index)
+
+df_short.to_csv("datasets/electricity-short-with-ex-vars.csv", index=False)
+df_short[["unique_id", "ds", "y"]].to_csv("datasets/electricity-short.csv", index=False)
+future_ex_vars_df.to_csv("datasets/electricity-short-future-ex-vars.csv", index=False)
